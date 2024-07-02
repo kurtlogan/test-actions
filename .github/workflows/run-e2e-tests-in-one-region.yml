@@ -17,6 +17,7 @@ run-name: Test label
 jobs:
   echo:
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-e2e') }}
+    runs-on: ubuntu-latest
     name: Echo
     steps:
       - run: echo "I have executed"
