@@ -20,9 +20,18 @@ jobs:
     steps:
       - name: Get PR labels
         id: pr-labels
-        uses: irby/get-labels-on-push@v1.0.1
+        uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const response =
+                await octokit.rest.repos.listPullRequestsAssociatedWithCommit({
+                  context.repo.owner,
+                  context.repo.repo,
+                  context.sha,
+                });
+            
+            const pr = response.data.length > 0 && response.data[0];
+            return {"labels": pr ? pr.labels.map((label) => label.name || "") : [] };
       - name: Echo
         if: ${{ !contains(steps.pr-labels.outputs.labels, 'skip-e2e') }}
         run: echo "I ran"
