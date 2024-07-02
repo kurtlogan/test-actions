@@ -29,9 +29,13 @@ jobs:
                   context.repo.repo,
                   context.sha,
                 });
+            core.debug(`Retrieved commit data: ${response.data}`);
             
             const pr = response.data.length > 0 && response.data[0];
-            return {"labels": pr ? pr.labels.map((label) => label.name || "") : [] };
+            core.debug(`Retrieved PR: ${pr}`);
+            
+            const labels = pr ? pr.labels.map((label) => label.name || "") : []
+            core.setOutput('labels', labels.join(' '));
       - name: Echo
         if: ${{ !contains(steps.pr-labels.outputs.labels, 'skip-e2e') }}
         run: echo "I ran"
