@@ -1,0 +1,22 @@
+name: Test label
+
+
+on:
+  push:
+    branches:
+      - main
+
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+run-name: Test label
+
+jobs:
+  echo:
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-e2e') }}
+    name: Echo
+    steps:
+      - run: echo "I have executed"
