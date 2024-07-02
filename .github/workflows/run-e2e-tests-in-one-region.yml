@@ -18,4 +18,5 @@ jobs:
   echo:
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-e2e') }}
     name: Echo
-    run: echo "I have executed"
+    steps:
+      run: echo "I have executed"
