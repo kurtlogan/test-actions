@@ -16,8 +16,13 @@ run-name: Test label
 
 jobs:
   echo:
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-e2e') }}
     runs-on: ubuntu-latest
-    name: Echo
     steps:
-      - run: echo "Labels - ${{github.event.pull_request.labels}}"
+      - name: Get PR labels
+        id: pr-labels
+        uses: irby/get-labels-on-push@v1.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Echo
+        if: ${{ !contains(steps.pr-labels.outputs.labels, 'skip-e2e') }}
+        run: echo "Labels - ${{github.event.pull_request.labels}}"
