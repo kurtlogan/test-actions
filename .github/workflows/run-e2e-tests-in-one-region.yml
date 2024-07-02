@@ -40,7 +40,7 @@ jobs:
             
             const labels = pr ? pr.labels.map((label) => label.name || "") : [];
             const labelsString = labels.join(' ');
-            core.info(labelsString);
+            core.info(`PR labels: ${labelsString}`);
             core.setOutput('labels', labelsString);
       - name: Echo
         if: ${{ !contains(steps.pr-labels.outputs.labels, 'skip-e2e') }}
