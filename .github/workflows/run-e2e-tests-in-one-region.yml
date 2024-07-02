@@ -23,11 +23,15 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const commit_sha = context.sha;
+            
             const response =
                 await github.rest.repos.listPullRequestsAssociatedWithCommit({
-                  context.repo.owner,
-                  context.repo.repo,
-                  context.sha,
+                  owner,
+                  repo,
+                  commit_sha,
                 });
             core.debug(`Retrieved commit data: ${response.data}`);
             
